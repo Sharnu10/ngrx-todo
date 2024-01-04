@@ -1,0 +1,21 @@
+<div class="bg-success text-light h3 p-3 my-2">
+  <form [formGroup]="taskForm" (ngSubmit)="addToList()">
+    <div class="input-group">
+      <input
+        type="text"
+        formControlName="task"
+        class="form-control mx-2"
+        placeholder="enter task here ..."
+      />
+      <div class="input-group-append">
+        <button
+          type="submit"
+          [disabled]="!taskForm.valid"
+          class="btn btn-warning text-success"
+        >
+          Add Task
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

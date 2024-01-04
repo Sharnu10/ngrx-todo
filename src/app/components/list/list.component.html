@@ -1,1 +1,19 @@
-<p>list works!</p>
+<ul class="list-group">
+  @for (item of tasks; track $index) {
+  <li
+    class="col-12 bg-success text-light h3 p-3 my-2 list-group-item"
+    (click)="selectItem(item)"
+    [ngClass]="$index + 1 == selectedItemId ? 'selected' : ''"
+  >
+    <div class="row">
+      <div class="col-7">{{ $index }} - {{ item.task }}</div>
+      <button class="btn btn-danger col-2 mx-2" (click)="onDelete(item)">
+        delete
+      </button>
+      <button class="btn btn-warning col-2" (click)="onEdit(item)">edit</button>
+    </div>
+  </li>
+  } @empty {
+  <span>Empty list of users</span>
+  }
+</ul>
