@@ -13,15 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ListComponent implements OnInit {
   tasks!: Task[];
-  selectedItemId: number | null = null;
-
-  @HostListener('document:click', ['$event'])
-  clickOutside(event: Event): void {
-    // Check if the clicked element is not inside the selected item
-    if (!this.isElementInsideSelected(event.target)) {
-      this.selectedItemId = null; // Clear selected item
-    }
-  }
+  selectedItemId: string = '';
 
   constructor(
     private todoService: TodoService,
@@ -42,25 +34,7 @@ export class ListComponent implements OnInit {
   }
 
   onEdit(task: Task) {
-    this.todoService.edit(task);
-  }
-
-  selectItem(item: any): void {
-    this.selectedItemId = item.id;
-    // this.router.navigate(['edit']);
-  }
-
-  private isElementInsideSelected(target: EventTarget | null): boolean {
-    // Check if the clicked element or any of its ancestors is the selected item
-    while (target) {
-      if (
-        target instanceof HTMLElement &&
-        target.classList.contains('bg-primary')
-      ) {
-        return true;
-      }
-      target = (target as Node).parentNode as EventTarget;
-    }
-    return false;
+    this.selectedItemId = task.id;
+    this.todoService.selectedTask(this.selectedItemId);
   }
 }

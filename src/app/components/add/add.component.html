@@ -13,7 +13,7 @@
           [disabled]="!taskForm.valid"
           class="btn btn-warning text-success"
         >
-          Add Task
+          {{ editMode ? "Edit Task" : "Add Task" }}
         </button>
       </div>
     </div>
