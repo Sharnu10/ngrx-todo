@@ -1,30 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Task } from '../model/task.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
+import { TaskData } from '../model/initialTaskList.data';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoService {
-  tasks: Task[] = [
-    { id: '1', task: 'task 1' },
-    { id: '2', task: 'task 2' },
-    { id: '3', task: 'task 3' },
-  ];
-
+  tasks: Task[] = TaskData;
   updatedTaskList$ = new BehaviorSubject<Task[]>([]);
   selectedTask$ = new BehaviorSubject<Task | null>(null);
+  tasksLength = 0;
+
   constructor() {
     this.getTask();
+    this.tasksLength = this.tasks.length;
   }
 
   getTask() {
     this.updatedTaskList$.next(this.tasks.slice());
-    return this.tasks.slice();
+    return of(this.tasks.slice());
   }
 
   addTask(task: Task) {
-    task.id = String(this.tasks.length + 1);
+    // task.id = String(this.tasks.length + 1);
+    task.id = String(this.tasksLength + 1);
     this.tasks.push(task);
     this.updatedTaskList$.next(this.tasks.slice());
   }
@@ -46,6 +46,6 @@ export class TodoService {
         : taskItem;
     });
     this.updatedTaskList$.next(this.tasks.slice());
-    return;
+    return of(this.tasks.slice());
   }
 }

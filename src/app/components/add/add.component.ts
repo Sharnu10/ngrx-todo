@@ -6,6 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { TodoService } from '../../service/todo.service';
+import { Store } from '@ngrx/store';
+import { updateTasks } from '../list/store/list.action';
 
 @Component({
   selector: 'app-add',
@@ -19,7 +21,11 @@ export class AddComponent implements OnInit {
   editMode = false;
   id: string = '';
 
-  constructor(private fb: FormBuilder, private todoService: TodoService) {}
+  constructor(
+    private fb: FormBuilder,
+    private todoService: TodoService,
+    private store: Store
+  ) {}
 
   ngOnInit(): void {
     this.todoService.selectedTask$.subscribe((taskData) => {
@@ -48,7 +54,8 @@ export class AddComponent implements OnInit {
     if (!this.editMode && this.taskForm.valid) {
       this.todoService.addTask(taskData);
     } else {
-      this.todoService.editTask(taskData);
+      // this.todoService.editTask(taskData);
+      this.store.dispatch(updateTasks({ updatedTask: taskData }));
     }
 
     this.editMode = false;

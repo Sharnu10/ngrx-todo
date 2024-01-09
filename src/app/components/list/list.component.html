@@ -1,5 +1,6 @@
 <ul class="list-group">
-  @for (item of tasks; track $index) {
+  @for (item of tasks | async; track $index) {
+  <!-- @for (item of tasks ; track $index) { -->
   <li class="col-12 bg-success text-light h3 p-3 my-2 list-group-item">
     <div class="row">
       <div class="col-7">{{ $index }} - {{ item.task }}</div>
