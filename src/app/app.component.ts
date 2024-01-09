@@ -11,4 +11,8 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'ngrx-todo';
+
+  // command to publish
+  //  https://Sharnu10.github.io/ngrx-todo/
+  // npx angular-cli-ghpages --dir=dist/ngrx-todo/browser
 }
