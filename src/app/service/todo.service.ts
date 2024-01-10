@@ -24,9 +24,10 @@ export class TodoService {
 
   addTask(task: Task) {
     // task.id = String(this.tasks.length + 1);
-    task.id = String(this.tasksLength + 1);
-    this.tasks.push(task);
+    const newTask = { ...task, id: String(this.tasksLength + 1) };
+    this.tasks.push(newTask);
     this.updatedTaskList$.next(this.tasks.slice());
+    return of(newTask);
   }
 
   delete(id: string) {

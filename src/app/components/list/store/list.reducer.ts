@@ -1,7 +1,12 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
 import { Task } from '../../../model/task.model';
-import { loadTaskSuccess, updateTasksSuccess } from './list.action';
+import {
+  addTask,
+  addTaskSuccess,
+  loadTaskSuccess,
+  updateTasksSuccess,
+} from './list.action';
 
 export interface TaskState {
   tasks: Task[];
@@ -21,6 +26,11 @@ export const _tasksReducer = createReducer(
       task.id === updatedTask.id ? updatedTask : task
     );
     return { ...state, tasks: editedTask };
+  }),
+
+  on(addTaskSuccess, (state, { newTask }) => {
+    newTask.id = String(state.tasks.length + 1);
+    return { ...state, newTask };
   })
 );
 

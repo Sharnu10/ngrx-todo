@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 
 import { TodoService } from '../../../service/todo.service';
 import {
+  addTask,
+  addTaskSuccess,
   dummyAction,
   loadTaskFailure,
   loadTaskSuccess,
@@ -17,13 +19,13 @@ import { getTasks } from './list.selector';
 @Injectable()
 export class TaskEffects {
   constructor(
-    private action$: Actions,
+    private actions$: Actions,
     private todoService: TodoService,
     private store: Store
   ) {}
 
   loadTasks$ = createEffect(() =>
-    this.action$.pipe(
+    this.actions$.pipe(
       ofType(loadTasks),
       withLatestFrom(this.store.select(getTasks)),
       mergeMap(([action, tasks]) => {
@@ -39,13 +41,38 @@ export class TaskEffects {
   );
 
   editTasks$ = createEffect(() =>
-    this.action$.pipe(
+    this.actions$.pipe(
       ofType(updateTasks),
       switchMap(({ updatedTask }) => {
         return this.todoService
           .editTask(updatedTask)
           .pipe(map(() => updateTasksSuccess({ updatedTask })));
       })
+    )
+  );
+
+  // addTask$ = createEffect(() =>
+  //     this.actions$.pipe(
+  //       ofType(addTask),
+  //       switchMap(({ newTask }) =>{
+  //         return this.todoService.addTask(newTask).pipe(
+  //           map(() => addTaskSuccess())
+  //         )
+  //       })
+  //     )
+  // );
+
+  addTask$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addTask),
+      mergeMap((action) =>
+        this.todoService.addTask(action.newTask).pipe(
+          map((taskData) => {
+            const newTask = { ...action.newTask, id: taskData.id };
+            return addTaskSuccess({ newTask });
+          })
+        )
+      )
     )
   );
 }
