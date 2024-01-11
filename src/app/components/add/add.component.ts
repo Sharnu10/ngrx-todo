@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { TodoService } from '../../service/todo.service';
 import { Store } from '@ngrx/store';
-import { updateTasks } from '../list/store/list.action';
+import { addTask, updateTasks } from '../list/store/list.action';
 
 @Component({
   selector: 'app-add',
@@ -52,7 +52,8 @@ export class AddComponent implements OnInit {
     };
 
     if (!this.editMode && this.taskForm.valid) {
-      this.todoService.addTask(taskData);
+      // this.todoService.addTask(taskData);
+      this.store.dispatch(addTask({ newTask: taskData }));
     } else {
       // this.todoService.editTask(taskData);
       this.store.dispatch(updateTasks({ updatedTask: taskData }));

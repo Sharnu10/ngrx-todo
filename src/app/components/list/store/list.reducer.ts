@@ -1,7 +1,12 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
 import { Task } from '../../../model/task.model';
-import { loadTaskSuccess, updateTasksSuccess } from './list.action';
+import {
+  addTask,
+  addTaskSuccess,
+  loadTaskSuccess,
+  updateTasksSuccess,
+} from './list.action';
 
 export interface TaskState {
   tasks: Task[];
@@ -14,13 +19,33 @@ export const initialState: TaskState = {
 export const _tasksReducer = createReducer(
   initialState,
 
-  on(loadTaskSuccess, (state, { tasks }) => ({ ...state, tasks })),
+  on(loadTaskSuccess, (state, { tasks }) => ({ ...state.tasks, tasks })),
 
   on(updateTasksSuccess, (state, { updatedTask }) => {
-    const editedTask = state.tasks.map((task: Task) =>
-      task.id === updatedTask.id ? updatedTask : task
+    // const editedTask = state.tasks.map((task: Task) =>
+    //   task.id === updatedTask.id ? updatedTask : task
+    // );
+    // return { ...state.tasks, tasks: editedTask };
+
+    const taskIndex = state.tasks.findIndex(
+      (task) => task.id === updatedTask.id
     );
-    return { ...state, tasks: editedTask };
+
+    if (taskIndex !== -1) {
+      const editedTask = [
+        ...state.tasks.slice(0, taskIndex),
+        updatedTask,
+        ...state.tasks.slice(taskIndex + 1),
+      ];
+      return { ...state, tasks: editedTask };
+    }
+
+    return state;
+  }),
+
+  on(addTaskSuccess, (state, { newTask }) => {
+    const updatedTask = [...state.tasks, newTask];
+    return { ...state.tasks, tasks: updatedTask };
   })
 );
 
