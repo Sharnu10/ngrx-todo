@@ -17,7 +17,7 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
     
-    build-windows:
+  build-windows:
     runs-on: windows-latest
 
     steps:
