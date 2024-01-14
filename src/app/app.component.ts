@@ -13,6 +13,7 @@ export class AppComponent {
   title = 'ngrx-todo';
 
   // command to publish
+  // ng  build  --base-href  https://Sharnu10.github.io/ngrx-todo/
   //  https://Sharnu10.github.io/ngrx-todo/
   // npx angular-cli-ghpages --dir=dist/ngrx-todo/browser
 }
